@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex; /* Use flexbox for layout */
+    margin: 20px;
+}
+
+.sidebar {
+    flex: 1; /* Allow sidebar to take up space */
+    background-color: #fff; /* White background for sidebar */
+    padding: 20px; /* Padding around sidebar */
+    border-right: 2px solid #ccc; /* Right border for separation */
+}
+
+.sidebar h3 {
+    margin-top: 0; /* Remove margin at the top */
+}
+
+.sidebar ul {
+    list-style-type: none; /* Remove default list styling */
+    padding: 0; /* Remove padding */
+}
+
+.sidebar li {
+    margin: 10px 0; /* Space between list items */
+}
+
+.sidebar a {
+    text-decoration: none; /* Remove underline */
+    color: #007bff; /* Link color */
+}
+
+.sidebar a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+.product-list {
+    flex: 3; /* Allow product list to take more space */
+    padding: 20px; /* Padding around product list */
+    background-color: #fff; /* White background for product list */
+}
+
+.product-list table {
+    width: 100%;
+    border-collapse: collapse; /* Collapse borders */
+}
+
+.product-list th, .product-list td {
+    border: 1px solid #ccc; /* Light grey border */
+    padding: 10px; /* Padding for table cells */
+    text-align: center; /* Center align text */
+}
+
+.product-list th {
+    background-color: #007bff; /* Blue background for header */
+    color: white; /* White text for header */
+}
+
+.search-container {
+    margin-bottom: 20px; /* Space below search form */
+}
+
+.search-container input[type="text"] {
+    padding: 5px; /* Padding for text input */
+    margin-right: 5px; /* Space between inputs */
+}
+
+.search-container input[type="submit"],
+.search-container input[type="reset"] {
+    padding: 5px 10px; /* Padding for buttons */
+    background-color: #007bff; /* Button background */
+    color: white; /* Button text color */
+    border: none; /* Remove border */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.search-container input[type="submit"]:hover,
+.search-container input[type="reset"]:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+

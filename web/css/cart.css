@@ -1,0 +1,106 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Nov 7, 2024, 12:54:43 AM
+    Author     : HOANG LONG
+*/
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.cart-container {
+    margin-top: 50px;
+    width: 80%;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 10px;
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+th {
+    background-color: burlywood;
+    color: white;
+    font-weight: bold;
+}
+
+td {
+    background-color: #f9f9f9;
+    max-width: 150px;
+}
+
+tr:nth-child(even) td {
+    background-color: #eef;
+}
+
+.grand-total-row {
+    font-weight: bold;
+    background-color: #e2e3e5;
+}
+
+a {
+    color: #ff3333;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.update{
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: burlywood;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    width: fit-content;
+}
+
+.update:hover {
+    background-color: dimgray ;
+}
+
+.checkout {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: burlywood;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    width: fit-content;
+}
+
+.checkout:hover {
+    background-color: dimgray;
+}
