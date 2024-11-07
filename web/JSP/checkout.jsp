@@ -10,7 +10,7 @@
     </head>
     <body>
         <div class="checkout-container">
-            
+
             <%
                 Vector<Customer> vector = (Vector<Customer>) request.getAttribute("customerData");
                 Customer customer = (Customer) session.getAttribute("customer");
@@ -19,7 +19,8 @@
             <div class="customer-info">
                 <h2>Checkout</h2>
                 <% if (customer != null) { %>
-                <p><strong>First Name:</strong> <%= customer.getFirst_name() %>!</p>
+                <p><strong>ID:</strong> <%= customer.getCustomer_id() %></p>
+                <p><strong>First Name:</strong> <%= customer.getFirst_name() %></p>
                 <p><strong>Last Name:</strong> <%= customer.getLast_name() %></p>
                 <p><strong>Phone:</strong> <%= customer.getPhone() %></p>
                 <p><strong>Email:</strong> <%= customer.getEmail() %></p>
@@ -69,10 +70,11 @@
                 <% } %>
             </div>
 
-            <form action="OrderController" method="POST">
+            <form action="CheckOutURL?service=confirmOrder" method="POST">
                 <input type="hidden" name="service" value="confirmOrder" />
                 <button type="submit" class="btn btn-primary">Confirm Order</button>
             </form>
+
             <a href="CartURL?service=showCart" class="btn btn-secondary">Back to Cart</a>
         </div>
     </body>

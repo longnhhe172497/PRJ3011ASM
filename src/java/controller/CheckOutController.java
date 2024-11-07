@@ -4,8 +4,11 @@
  */
 package controller;
 
+import com.sun.jdi.connect.spi.Connection;
 import entity.Cart;
 import entity.Customer;
+import entity.Order_items;
+import entity.Orders;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,8 +17,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import static java.lang.System.out;
 import java.util.Enumeration;
 import java.util.Vector;
+import model.DAOOrder_items;
+import model.DAOOrders;
+import model.DBConnect;
 
 /**
  *
@@ -36,7 +43,7 @@ public class CheckOutController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(true);
-        
+
         // Lấy giỏ hàng từ session
         Vector<Cart> vectorCart = new Vector<>();
         Enumeration<String> attributeNames = session.getAttributeNames();
@@ -60,7 +67,7 @@ public class CheckOutController extends HttpServlet {
 
         // Nếu không có khách hàng trong session, chuyển hướng đến trang đăng nhập
         if (customer == null) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("CustomerURL?service=loginCustomer");
             return;
         }
 
@@ -71,9 +78,58 @@ public class CheckOutController extends HttpServlet {
 
         // Chuyển hướng tới trang checkout.jsp để hiển thị thông tin
         request.getRequestDispatcher("JSP/checkout.jsp").forward(request, response);
+
+        DAOOrders daoOr = new DAOOrders();
+        DAOOrder_items daoOrIt = new DAOOrder_items();
+        try {
+            String service = request.getParameter("service");
+            if ("confirmOrder".equals(service)) {
+                String order_id = request.getParameter("order_id");  // Not needed anymore
+                String customer_id = request.getParameter("customer_id");
+                String order_status = request.getParameter("order_status");
+                String order_date = "2024-11-07"; // Example order date (this should come dynamically)
+                String required_date = "2024-11-14"; // Example required date (this should come dynamically)
+                String shipped_date = "2024-11-08";
+                String store_id = request.getParameter("store_id");
+                String staff_id = request.getParameter("staff_id");
+
+                // check data- validate
+                if (customer_id == null || customer_id.equals("")) {
+                    out.print("customer_id is empty");
+                    return;
+                }
+
+                // Convert to integers
+                int customer_iD = Integer.parseInt(customer_id);
+                int order_statuS = Integer.parseInt(order_status);
+                int store_iD = Integer.parseInt(store_id);
+                int staff_iD = Integer.parseInt(staff_id);
+
+                // Get the next order_id by finding the max order_id and incrementing it
+                int order_iD = daoOr.getNextOrderId();  // This method gets the next order_id (max + 1)
+
+                // Create a new order
+                Orders order = new Orders(order_iD, customer_iD, order_statuS, order_date, required_date, shipped_date, store_iD, staff_iD);
+
+                // Add the order to the database
+                int n = daoOr.addOrder(order);
+
+                // Remove the cart from session after order is placed
+                session.removeAttribute("vectorCart");
+
+                // Forward to order confirmation page
+                request.setAttribute("orderId", order_iD);
+                request.setAttribute("grandTotal", grandTotal);
+                request.getRequestDispatcher("JSP/orderConfirmation.jsp").forward(request, response);
+            } else {
+                // Handle other services here
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

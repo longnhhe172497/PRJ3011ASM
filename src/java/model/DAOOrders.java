@@ -18,7 +18,23 @@ import java.util.logging.Logger;
  * @author admin
  */
 public class DAOOrders extends DBConnect {
-
+    
+    public int getNextOrderId() {
+        int nextOrderId = 1; // Default to 1 if no orders exist
+        String query = "SELECT MAX(order_id) FROM orders";
+        
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                nextOrderId = rs.getInt(1) + 1; // Get the next order_id
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return nextOrderId;
+    }
+    
     public int insertOrder(Orders order) {
         int n = 0;
         String sql = "INSERT INTO [dbo].[orders]\n"
@@ -45,7 +61,6 @@ public class DAOOrders extends DBConnect {
     public int addOrder(Orders order) {
         int n = 0;
         String sql = "INSERT INTO [dbo].[orders]\n"
-                + "           ([order_id]\n"
                 + "           ,[customer_id]\n"
                 + "           ,[order_status]\n"
                 + "           ,[order_date]\n"
@@ -58,14 +73,13 @@ public class DAOOrders extends DBConnect {
         try {
 
             PreparedStatement pre = conn.prepareStatement(sql);
-            pre.setInt(1, order.getOrder_id());
-            pre.setInt(2, order.getCustomer_id());
-            pre.setInt(3, order.getOrder_status());
-            pre.setString(4, order.getOrder_date());
-            pre.setString(5, order.getRequired_date());
-            pre.setString(6, order.getShipped_date());
-            pre.setInt(7, order.getStore_id());
-            pre.setInt(8, order.getStaff_id());
+            pre.setInt(1, order.getCustomer_id());
+            pre.setInt(2, order.getOrder_status());
+            pre.setString(3, order.getOrder_date());
+            pre.setString(4, order.getRequired_date());
+            pre.setString(5, order.getShipped_date());
+            pre.setInt(6, order.getStore_id());
+            pre.setInt(7, order.getStaff_id());
             n = pre.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(DAOOrders.class.getName()).log(Level.SEVERE, null, ex);

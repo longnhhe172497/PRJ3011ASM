@@ -30,7 +30,7 @@ public class CartController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         DAOCart dao = new DAOCart();
         HttpSession session = request.getSession(true);
-
+        
         try (PrintWriter out = response.getWriter()) {
             Cart cart = (Cart) session.getAttribute("cart");
 

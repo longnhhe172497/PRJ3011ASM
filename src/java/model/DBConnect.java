@@ -48,7 +48,7 @@ public class DBConnect {
     }
 
     public DBConnect() {
-        this("jdbc:sqlserver://localhost:1433;databaseName=PRJ3011_HE172497", "sa", "123");
+        this("jdbc:sqlserver://localhost:1433;databaseName=PRJ3011ASM_HE172497", "sa", "123");
     }
 
     public static void main(String[] args) {
