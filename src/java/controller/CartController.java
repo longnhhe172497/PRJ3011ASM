@@ -30,18 +30,10 @@ public class CartController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         DAOCart dao = new DAOCart();
         HttpSession session = request.getSession(true);
-        
+
         try (PrintWriter out = response.getWriter()) {
-            Cart cart = (Cart) session.getAttribute("cart");
-
-            if (cart == null) {
-                cart = new Cart();
-                session.setAttribute("cart", cart);
-            }
-
             String service = request.getParameter("service");
 
-            // Handle add to cart
             if ("add2Cart".equals(service)) {
                 int pid = Integer.parseInt(request.getParameter("pid"));
                 Cart itemInCart = (Cart) session.getAttribute("product_" + pid);
@@ -118,6 +110,27 @@ public class CartController extends HttpServlet {
 
                 updateCartItemCount(session);
                 request.setAttribute("vectorCart", vectorCart);
+                request.getRequestDispatcher("JSP/viewCart.jsp").forward(request, response);
+            } else if ("removeAllCart".equals(service)) {
+                Enumeration<String> attributeNames = session.getAttributeNames();
+                Vector<String> cartAttributes = new Vector<>();
+                
+                // Thu thập tất cả các thuộc tính giỏ hàng
+                while (attributeNames.hasMoreElements()) {
+                    String attributeName = attributeNames.nextElement();
+                    Object attribute = session.getAttribute(attributeName);
+                    if (attribute instanceof Cart) {
+                        cartAttributes.add(attributeName);
+                    }
+                }
+                
+                // Xóa tất cả các thuộc tính giỏ hàng
+                for (String attributeName : cartAttributes) {
+                    session.removeAttribute(attributeName);
+                }
+                
+                updateCartItemCount(session);
+                request.setAttribute("vectorCart", new Vector<Cart>());
                 request.getRequestDispatcher("JSP/viewCart.jsp").forward(request, response);
             }
 

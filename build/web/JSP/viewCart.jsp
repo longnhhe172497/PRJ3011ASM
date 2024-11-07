@@ -36,7 +36,7 @@
                         <td><%= item.getProduct_name() %></td>
                         <td>
                             <!-- Input field for quantity -->
-                            <input type="number" name="quantity_<%= item.getProduct_id() %>" min="1" value="<%= item.getQuantity() %>" />
+                            <input type="number" name="quantity_<%= item.getProduct_id() %>" min="1" max="10" value="<%= item.getQuantity() %>" />
                         </td>
                         <td>$<%= String.format("%.2f", item.getList_price()) %></td>
                         <td>$<%= String.format("%.2f", total) %></td>
@@ -49,12 +49,16 @@
                     </tr>
                 </table>
                 <button class = "update" type="submit">Update Cart</button>
+                
+                <a href="CheckOutURL" class="checkout">Checkout</a>
             </form>
-            <a href="CheckOutURL" class="checkout">Checkout</a>
-
             <% } else { %>
-            <p>Your cart is empty.</p>
+            <div style="text-align: center; padding: 20px;">
+                <p>Your cart is empty.</p>
+                <p>Please add some products to your cart.</p>
+            </div>
             <% } %>
+            <a href="ProductURL" class="btn">Back to Home</a>
         </div>
     </body>
 </html>

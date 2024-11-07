@@ -7,6 +7,46 @@
         <title>Panner</title>
         <link rel="stylesheet" type="text/css" href="css/panner.css">
     </head>
+    <style>
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: #ffffff;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .welcome-message {
+            color: #3a3a3a;
+            font-size: 1.4em;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .login-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .login-links a {
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: #f8f8f8;
+        }
+
+        .login-links a:hover {
+            background: #8b7355;
+            color: white;
+        }
+
+    </style>
     <body>
         <% 
             Vector<Customer> vector = (Vector<Customer>) request.getAttribute("customerData");

@@ -66,6 +66,27 @@ public class BillController extends HttpServlet {
                 // Chuyển hướng về trang danh sách
                 response.sendRedirect("BillURL?service=listAllBill");
             }
+            if (service.equals("viewDetail")) {
+                int orderId = Integer.parseInt(request.getParameter("orderId"));
+                
+                // Lấy thông tin chi tiết đơn hàng
+                String orderSQL = "SELECT * FROM orders WHERE order_id = " + orderId;
+                Orders order = daoOrders.getOrders(orderSQL).get(0);
+                
+                // Lấy thông tin chi tiết các mặt hàng trong đơn hàng
+                String itemsSQL = "SELECT oi.*, p.product_name " +
+                                "FROM order_items oi " +
+                                "JOIN products p ON oi.product_id = p.product_id " +
+                                "WHERE oi.order_id = " + orderId;
+                Vector<Order_items> orderItems = daoOrderItems.getOrderItems(itemsSQL);
+                
+                // Đặt dữ liệu vào request để hiển thị
+                request.setAttribute("orderData", order);
+                request.setAttribute("orderItemsData", orderItems);
+                
+                // Chuyển hướng đến trang hiển thị chi tiết
+                dispatch(request, response, "/JSP/detailBill.jsp");
+            }
         }
     }
     

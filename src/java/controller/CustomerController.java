@@ -16,6 +16,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.Vector;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.DAOCustomer;
 
 /**
@@ -54,15 +57,15 @@ public class CustomerController extends HttpServlet {
                     String password = request.getParameter("password");
                     customer = dao.login(username, password);
                     if (customer == null) {
-                        request.setAttribute("erro", "login faile");
+                        request.setAttribute("error", "Invalid username or password!");
                         request.getRequestDispatcher("JSP/loginCustomer.jsp").forward(request, response);
                     } else {
                         session.setAttribute("customer", customer);
                         response.sendRedirect("ProductURL");
-
                     }
                 }
             }
+            
             if (service.equals("deleteCustomer")) {
                 String cid = request.getParameter("cid");
                 int n = dao.removeCustomer(Integer.parseInt(cid));
@@ -76,7 +79,6 @@ public class CustomerController extends HttpServlet {
             if (service.equals("updateCustomer")) {
                 String submit = request.getParameter("submit");
                 if (submit == null) {//show insert form
-
                     String cid = request.getParameter("cid");
                     int customerID = Integer.parseInt(cid);
                     Vector<Customer> vector = dao.getCustomers("select * from Customers where customer_id=" + customerID);
@@ -85,7 +87,6 @@ public class CustomerController extends HttpServlet {
                     request.setAttribute("vector", vector);
                     dispath(request, response, "JSP/updateCustomer.jsp");
                 } else {
-                    //  if (submit != null) {
                     //get data
                     String customer_id = request.getParameter("customer_id");
                     String first_name = request.getParameter("first_name");
@@ -96,14 +97,65 @@ public class CustomerController extends HttpServlet {
                     String city = request.getParameter("city");
                     String state = request.getParameter("state");
                     String zip_code = request.getParameter("zip_code");
-                    //check data- validate
-                    if (customer_id.equals("")) {
-                        out.print("customer_id is empty");
-                    }
-                    // convert
-                    int customer_iD = Integer.parseInt(customer_id);
 
-                    //
+                    // Validate data
+                    StringBuilder errorMsg = new StringBuilder();
+                    
+                    // Check customer_id
+                    if (customer_id == null || customer_id.trim().isEmpty()) {
+                        errorMsg.append("Customer ID cannot be empty<br>");
+                    }
+
+                    // Check first_name and last_name
+                    if (first_name == null || first_name.trim().isEmpty()) {
+                        errorMsg.append("First name cannot be empty<br>");
+                    }
+                    if (last_name == null || last_name.trim().isEmpty()) {
+                        errorMsg.append("Last name cannot be empty<br>");
+                    }
+
+                    // Check phone number format
+                    if (phone != null && !phone.trim().isEmpty() && !phone.matches("\\d{10,11}")) {
+                        errorMsg.append("Invalid phone number (must be 10-11 digits)<br>");
+                    }
+
+                    // Check email format
+                    if (email != null && !email.trim().isEmpty() && !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+                        errorMsg.append("Invalid email format<br>");
+                    }
+
+                    // Check zip code
+                    if (zip_code != null && !zip_code.trim().isEmpty() && !zip_code.matches("\\d{5,6}")) {
+                        errorMsg.append("Invalid zip code (must be 5-6 digits)<br>");
+                    }
+
+                    // Check if city is empty
+                    if (city == null || city.trim().isEmpty()) {
+                        errorMsg.append("City cannot be empty<br>");
+                    }
+
+                    // Check if street is empty
+                    if (street == null || street.trim().isEmpty()) {
+                        errorMsg.append("Street address cannot be empty<br>");
+                    }
+
+                    // Check if state is empty
+                    if (state == null || state.trim().isEmpty()) {
+                        errorMsg.append("State cannot be empty<br>");
+                    }
+
+                    if (errorMsg.length() > 0) {
+                        // If there are errors, display them and retain the form
+                        request.setAttribute("error", errorMsg.toString());
+                        Vector<Customer> vector = dao.getCustomers("select * from Customers where customer_id=" + customer_id);
+                        ResultSet rsState = dao.getData("SELECT distinct state FROM [Customers]");
+                        request.setAttribute("rsState", rsState);
+                        request.setAttribute("vector", vector);
+                        dispath(request, response, "JSP/updateCustomer.jsp");
+                        return;
+                    }
+
+                    int customer_iD = Integer.parseInt(customer_id);
                     Customer cus = new Customer(customer_iD, first_name, last_name, phone, email, street, city, state, zip_code);
                     int n = dao.updateCustomer(cus);
                     response.sendRedirect("CustomerURL?service=listAllCustomer");
@@ -113,32 +165,79 @@ public class CustomerController extends HttpServlet {
             if (service.equals("insertCustomer")) {
                 String submit = request.getParameter("submit");
                 if (submit == null) {//show insert form
-                    ResultSet rsState = dao.getData("SELECT distinct state  FROM [Customers]");
+                    ResultSet rsState = dao.getData("SELECT distinct state FROM [Customers]");
                     request.setAttribute("rsState", rsState);
                     dispath(request, response, "JSP/insertCustomer.jsp");
                 } else {
-                    //  if (submit != null) {
                     //get data
-                    String customer_id = request.getParameter("customer_id");
                     String first_name = request.getParameter("first_name");
-                    String last_name = request.getParameter("last_name");
+                    String last_name = request.getParameter("last_name"); 
                     String phone = request.getParameter("phone");
                     String email = request.getParameter("email");
                     String street = request.getParameter("street");
                     String city = request.getParameter("city");
                     String state = request.getParameter("state");
                     String zip_code = request.getParameter("zip_code");
-                    //check data- validate
-                    if (customer_id.equals("")) {
-                        out.print("customer_id is empty");
-                    }
-                    // convert
-                    int customer_iD = Integer.parseInt(customer_id);
 
-                    //
+                    // Validate data
+                    StringBuilder errorMsg = new StringBuilder();
+
+                    // Check first_name and last_name
+                    if (first_name == null || first_name.trim().isEmpty()) {
+                        errorMsg.append("First name cannot be empty<br>");
+                    }
+                    if (last_name == null || last_name.trim().isEmpty()) {
+                        errorMsg.append("Last name cannot be empty<br>");
+                    }
+
+                    // Check phone number format
+                    if (phone != null && !phone.trim().isEmpty() && !phone.matches("\\d{10,11}")) {
+                        errorMsg.append("Invalid phone number (must be 10-11 digits)<br>");
+                    }
+
+                    // Check email format
+                    if (email != null && !email.trim().isEmpty() && !email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+                        errorMsg.append("Invalid email format<br>");
+                    }
+
+                    // Check zip code
+                    if (zip_code != null && !zip_code.trim().isEmpty() && !zip_code.matches("\\d{5,6}")) {
+                        errorMsg.append("Invalid zip code (must be 5-6 digits)<br>");
+                    }
+
+                    // Check if city is empty
+                    if (city == null || city.trim().isEmpty()) {
+                        errorMsg.append("City cannot be empty<br>");
+                    }
+
+                    // Check if street is empty
+                    if (street == null || street.trim().isEmpty()) {
+                        errorMsg.append("Street address cannot be empty<br>");
+                    }
+
+                    // Check if state is empty
+                    if (state == null || state.trim().isEmpty()) {
+                        errorMsg.append("State cannot be empty<br>");
+                    }
+
+                    if (errorMsg.length() > 0) {
+                        // If there are errors, display them and retain the form
+                        request.setAttribute("error", errorMsg.toString());
+                        ResultSet rsState = dao.getData("SELECT distinct state FROM [Customers]");
+                        request.setAttribute("rsState", rsState);
+                        dispath(request, response, "JSP/insertCustomer.jsp");
+                        return;
+                    }
+
+                    ResultSet rs = dao.getData("SELECT MAX(customer_id) as maxId FROM Customers");
+                    int customer_iD = 1;
+                    if(rs.next()) {
+                        customer_iD = rs.getInt("maxId") + 1;
+                    }
+
                     Customer cus = new Customer(customer_iD, first_name, last_name, phone, email, street, city, state, zip_code);
                     int n = dao.addCustomer(cus);
-                    response.sendRedirect("CustomerURL?service=listAllCustomer");
+                    response.sendRedirect("ProductURL");
                 }
             }
 
@@ -165,6 +264,8 @@ public class CustomerController extends HttpServlet {
 //                    sql = "select * from Customers where Customers like '%" + cname + "%'";
 //                }
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(CustomerController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

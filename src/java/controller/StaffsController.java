@@ -61,7 +61,7 @@ public class StaffsController extends HttpServlet {
                     String password = request.getParameter("password");
                     staffs = dao.login(username, password);
                     if (staffs == null) {
-                        request.setAttribute("erro", "login faile");
+                        request.setAttribute("error", "Invalid username or password!");
                         request.getRequestDispatcher("JSP/loginStaffs.jsp").forward(request, response);
                     } else {
                         session.setAttribute("staffs", staffs);
