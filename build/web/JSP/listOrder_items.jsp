@@ -35,6 +35,7 @@
                 <input type="reset" value="Clear">
             </p>
         </form>
+        <p><a href="/PRJ3011ASM/JSP/homeManager.jsp">Back to Home Manager</a></p>
         <p><a href="Order_itemsURL?service=insertOrder_items">Insert Order Ítems</a></p>
         <table border="1">
             <caption>

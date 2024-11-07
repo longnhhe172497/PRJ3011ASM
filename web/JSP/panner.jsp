@@ -12,9 +12,14 @@
             Vector<Customer> vector = (Vector<Customer>) request.getAttribute("customerData");
             Customer customer = (Customer) session.getAttribute("customer");
             Vector<Staffs> vectorStaff = (Vector<Staffs>) request.getAttribute("staffsData");
-            Staffs staff = (Staffs) session.getAttribute("staff");
+            Staffs staff = (Staffs) session.getAttribute("staffs");
             Vector<Cart> vectorCart = (Vector<Cart>) session.getAttribute("vectorCart");
             int cartItemCount = (vectorCart != null) ? vectorCart.size() : 0;
+
+            if (staff != null) {
+                response.sendRedirect("/PRJ3011ASM/JSP/homeManager.jsp");
+                return;
+            }
         %>
 
         <!-- Header Section -->
@@ -22,9 +27,7 @@
             <h2 class="welcome-message">
                 <% if (customer != null) { %>
                 Welcome, <%= customer.getEmail() %>!
-                <% } else if (staff != null){ %>
-                Welcome, <%= staff.getEmail() %>!
-                <% } else {%>
+                <% } else { %>
                 Please log in or register.
                 <% } %>
             </h2>
@@ -33,8 +36,6 @@
                 <% if (customer != null) { %>
                 <a href="/PRJ3011ASM/CustomerURL?service=logoutCustomer">Logout</a>
                 <a href="/PRJ3011ASM/CartURL?service=showCart">Show Cart (<%= session.getAttribute("cartItemCount") != null ? session.getAttribute("cartItemCount") : 0 %>)</a>
-                <% } else if (staff != null){ %>
-                <a href="/PRJ3011ASM/StaffsURL?service=logoutStaffs">Logout</a>
                 <% } else { %>
                 <a href="/PRJ3011ASM/CustomerURL?service=loginCustomer">Login Customer</a>
                 <a href="/PRJ3011ASM/StaffsURL?service=loginStaffs">Login Staff</a>

@@ -13,37 +13,74 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: Arial, sans-serif;
-    background-color: aqua; /* Optional: background color for better contrast */
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #8b7355, #6d5a43);
 }
 
 .login-container {
-    width: 400px; /* Increased width for a more standard login form size */
-    padding: 20px;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    background-color: white; /* White background for the form */
+    width: 400px;
+    padding: 40px;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
+
 .login-container h2 {
     text-align: center;
-    font-size: 30px;
+    font-size: 2em;
+    color: #3a3a3a;
+    margin-bottom: 30px;
+    font-weight: 600;
 }
+
 .login-container input[type="text"],
 .login-container input[type="password"] {
     width: 100%;
-    padding: 10px; /* Slightly more padding for inputs */
-    margin: 10px 0; /* More margin for spacing */
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 15px;
+    margin: 15px 0;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
     box-sizing: border-box;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+.login-container input[type="text"]:focus,
+.login-container input[type="password"]:focus {
+    outline: none;
+    border-color: #8b7355;
+    box-shadow: 0 0 0 3px rgba(139,115,85,0.1);
 }
 
 .login-container input[type="submit"],
 .login-container input[type="reset"] {
     width: 48%;
-    padding: 10px;
-    margin-top: 10px;
+    padding: 12px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
-    border-radius: 4px;
+    font-weight: 600;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+.login-container input[type="submit"] {
+    background-color: #8b7355;
+    color: white;
+    margin-right: 2%;
+}
+
+.login-container input[type="reset"] {
+    background-color: #f8f8f8;
+    color: #4a4a4a;
+    margin-left: 2%;
+}
+
+.login-container input[type="submit"]:hover {
+    background-color: #6d5a43;
+}
+
+.login-container input[type="reset"]:hover {
+    background-color: #e0e0e0;
 }

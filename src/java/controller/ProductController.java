@@ -151,6 +151,35 @@ public class ProductController extends HttpServlet {
 //                    sql="select * from Products where product_name like '%"+pname+"%'";
 //                } 
             }
+            
+            if (service.equals("productManager")) { //request
+                String category = request.getParameter("category");
+                String sql = "select * from Products";
+                String submit = request.getParameter("submit");
+                if (submit != null) {
+                    String pname = request.getParameter("pname");
+                    sql = "select * from Products where product_name like '%" + pname + "%'";
+                } else if (category != null && !category.isEmpty()) {
+                    sql = "SELECT * FROM Products WHERE category_name = '" + category + "'";
+                }
+                Vector<Products> productVector = dao.getProducts(sql);
+                
+                Vector<String> categories = dao.getCategories();
+                
+                //select view:jsp
+                RequestDispatcher dispath = request.getRequestDispatcher("/JSP/listProduct.jsp");
+                //set data to view
+                request.setAttribute("productData", productVector);
+                request.setAttribute("tableTitle", "Product");
+                request.setAttribute("categories", categories);
+                //run
+                dispath.forward(request, response);
+//                String submit=request.getParameter("submit");
+//                if(submit!=null){
+//                    String pname=request.getParameter("pname");
+//                    sql="select * from Products where product_name like '%"+pname+"%'";
+//                } 
+            }
         }
     }
 

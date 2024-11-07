@@ -1,0 +1,62 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Nov 8, 2024, 2:55:18 AM
+    Author     : HOANG LONG
+*/
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    table-layout: fixed;
+}
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+tr:hover {
+    background-color: #f5f5f5;
+}
+.view-btn {
+    padding: 6px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.view-btn:hover {
+    background-color: #0056b3;
+}
+.status-wait {
+    color: orange;
+}
+.status-process {
+    color: blue;
+}
+.status-done {
+    color: green;
+}
+.status-received {
+    color: purple;
+}
+.detail-btn, .status-select {
+    width: 100px;
+}
+td:last-child {
+    width: 120px;
+}
+.status-select {
+    margin-left: 10px;
+}

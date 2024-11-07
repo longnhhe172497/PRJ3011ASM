@@ -29,15 +29,7 @@
            String title=(String)request.getAttribute("tableTitle");     
         %>
         <%Customer customer=(Customer)session.getAttribute("customer");%>
-        <p align="right">
-            <%if(customer!=null){%>
-            <%= "Welcome " + customer.getEmail() %>
-
-            <a href="/PRJ3011ASM/CustomerURL?service=logoutCustomer">Logout</a>
-
-            <%}else{%>
-            <a href="/PRJ3011ASM/CustomerURL?service=loginCustomer">Login</a>
-            <%}%> 
+        
         </p>
         <form action="CustomerURL" method="get">
             <input type="hidden" name="service" value="listAllCustomer">
@@ -46,6 +38,7 @@
                 <input type="reset" value="Clear">
             </p>
         </form>
+        <p><a href="/PRJ3011ASM/JSP/homeManager.jsp">Back to Home Manager</a></p>
         <p><a href="/PRJ3011ASM/CustomerURL?service=insertCustomer">Insert Customer</a></p>
         <table border="1">
            <caption>

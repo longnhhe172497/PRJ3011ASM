@@ -24,6 +24,7 @@
                 <input type="reset" value="Clear">
             </p>
         </form>
+        <p><a href="/PRJ3011ASM/JSP/homeManager.jsp">Back to Home Manager</a></p>
         <p><a href="OrdersURL?service=insertOrders">Insert Orders</a></p>
 
         <table border="1">

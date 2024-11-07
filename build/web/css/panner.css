@@ -1,56 +1,37 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #e9ecef; /* Light gray background */
-    margin: 0;
-    padding: 20px;
-}
-
 .header {
-    background-color: burlywood; /* Bootstrap primary blue */
-    color: white; /* White text */
-    padding: 20px;
-    text-align: center;
-    border-radius: 10px; /* More pronounced rounded corners */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
-    margin-bottom: 20px; /* Space below the header */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: #ffffff;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
 }
 
 .welcome-message {
-    margin: 0; /* Remove default margin */
-    font-size: 24px; /* Larger font size for the welcome message */
+    color: #3a3a3a;
+    font-size: 1.4em;
+    font-weight: 600;
+    margin: 0;
 }
 
 .login-links {
-    text-align: right; /* Center align links for a balanced look */
-    margin-top: 10px; /* Space above the links */
+    display: flex;
+    gap: 20px;
+    align-items: center;
 }
 
 .login-links a {
-    color: white; /* White text for links */
-    margin: 0 15px; /* Space between links */
-    text-decoration: none; /* Remove underline */
-    padding: 10px 15px; /* Add padding for a button-like effect */
-    border-radius: 5px; /* Rounded corners for links */
-    transition: background-color 0.3s, color 0.3s; /* Smooth transition */
+    text-decoration: none;
+    color: #4a4a4a;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    background: #f8f8f8;
 }
 
 .login-links a:hover {
-    background-color: #0056b3; /* Darker blue on hover */
-    color: #ffcc00; /* Change text color on hover */
-}
-
-/* Responsive Design */
-@media (max-width: 600px) {
-    .header {
-        padding: 15px; /* Adjust padding for smaller screens */
-    }
-
-    .welcome-message {
-        font-size: 20px; /* Slightly smaller font size for smaller screens */
-    }
-
-    .login-links a {
-        margin: 0 10px; /* Reduce margin on smaller screens */
-        padding: 8px 12px; /* Reduce padding for smaller screens */
-    }
+    background: #8b7355;
+    color: white;
 }

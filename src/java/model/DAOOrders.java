@@ -111,6 +111,20 @@ public class DAOOrders extends DBConnect {
         return n;
     }
 
+    public int updateOrderStatus(Orders order) {
+        int n = 0;
+        String sql = "UPDATE [dbo].[orders] SET [order_status] = ? WHERE [order_id] = ?";
+        try {
+            PreparedStatement pre = conn.prepareStatement(sql);
+            pre.setInt(1, order.getOrder_status());
+            pre.setInt(2, order.getOrder_id());
+            n = pre.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAOOrders.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return n;
+    }
+
     public int removeOrder(int order_id) {
         int n = 0;
         String sql = "DELETE FROM [dbo].[orders] WHERE [order_id] = " + order_id;
