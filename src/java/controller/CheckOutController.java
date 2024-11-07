@@ -21,7 +21,7 @@ import java.util.Vector;
  *
  * @author HOANG LONG
  */
-@WebServlet(name = "CheckOutController", urlPatterns = {"/checkoutURL"})
+@WebServlet(name = "CheckOutController", urlPatterns = {"/CheckOutURL"})
 public class CheckOutController extends HttpServlet {
 
     /**

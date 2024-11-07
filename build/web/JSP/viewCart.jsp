@@ -50,7 +50,7 @@
                 </table>
                 <button class = "update" type="submit">Update Cart</button>
             </form>
-            <a href="CartURL?service=checkout" class="checkout">Checkout</a>
+            <a href="CheckOutURL" class="checkout">Checkout</a>
 
             <% } else { %>
             <p>Your cart is empty.</p>

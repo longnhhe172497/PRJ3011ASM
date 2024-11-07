@@ -69,10 +69,6 @@ a {
     text-decoration: none;
 }
 
-a:hover {
-    text-decoration: underline;
-}
-
 .update{
     display: block;
     margin: 20px auto;
@@ -81,8 +77,9 @@ a:hover {
     color: white;
     text-align: center;
     text-decoration: none;
-    border-radius: 5px;
     width: fit-content;
+    border: none;
+    border-radius: 5px;
 }
 
 .update:hover {

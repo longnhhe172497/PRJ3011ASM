@@ -1,76 +1,79 @@
-<%-- 
-    Document   : checkout
-    Created on : Nov 7, 2024, 2:34:07 AM
-    Author     : HOANG LONG
---%>
-
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.util.Vector,entity.Cart,entity.Customer" %>
+<%@page contentType="text/html;charset=UTF-8" language="java" %>
+<%@page import="java.util.Vector,entity.Customer,entity.Cart" %>
+<%@ page import="model.DAOOrders" %>
 
 <!DOCTYPE html>
 <html>
     <head>
         <title>Checkout</title>
-        <link rel="stylesheet" type="text/css" href="css/cart.css">
+        <link rel="stylesheet" type="text/css" href="css/checkout.css">
     </head>
     <body>
         <div class="checkout-container">
-            <h2>Checkout</h2>
-
-            <h3>Customer Information</h3>
             
             <%
-                // Hiển thị thông tin khách hàng nếu có
-                Object customer = request.getAttribute("customer");
-                if (customer != null) {
-                    // Giả sử customer có các thuộc tính như name, email, etc.
-                    out.println("<p>Name: " + customer.getName() + "</p>");
-                    out.println("<p>Email: " + customer.getEmail() + "</p>");
-                }
+                Vector<Customer> vector = (Vector<Customer>) request.getAttribute("customerData");
+                Customer customer = (Customer) session.getAttribute("customer");
             %>
 
-            <h3>Your Order</h3>
-            <%
-                Vector<Cart> vectorCart = (Vector<Cart>) request.getAttribute("vectorCart");
-                if (vectorCart != null && !vectorCart.isEmpty()) {
-            %>
-            <table border="0">
-                <tr>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Total</th>
-                </tr>
-                <%
-                    double grandTotal = 0;
-                    for (Cart item : vectorCart) {
-                        double total = item.getQuantity() * item.getList_price();
-                        grandTotal += total;
-                %>
-                <tr>
-                    <td><%= item.getProduct_name() %></td>
-                    <td><%= item.getQuantity() %></td>
-                    <td>$<%= String.format("%.2f", item.getList_price()) %></td>
-                    <td>$<%= String.format("%.2f", total) %></td>
-                </tr>
+            <div class="customer-info">
+                <h2>Checkout</h2>
+                <% if (customer != null) { %>
+                <p><strong>First Name:</strong> <%= customer.getFirst_name() %>!</p>
+                <p><strong>Last Name:</strong> <%= customer.getLast_name() %></p>
+                <p><strong>Phone:</strong> <%= customer.getPhone() %></p>
+                <p><strong>Email:</strong> <%= customer.getEmail() %></p>
+                <p><strong>Street:</strong> <%= customer.getStreet() %></p>
+                <p><strong>City:</strong> <%= customer.getCity() %></p>
+                <p><strong>State:</strong> <%= customer.getState() %></p>
+                <p><strong>Zip Code:</strong> <%= customer.getZip_code() %></p>
+                <% } else { %>
+                <p>Please log in or register.</p>
                 <% } %>
-                <tr>
-                    <td colspan="3">Grand Total</td>
-                    <td>$<%= String.format("%.2f", grandTotal) %></td>
-                </tr>
-            </table>
-            <%
-                } else {
-                    out.println("<p>Your cart is empty.</p>");
-                }
-            %>
+            </div>
 
-            <!-- Submit button to confirm the order (you can add order processing logic here) -->
-            <form method="POST" action="CartURL?service=confirmOrder">
-                <button type="submit">Confirm Order</button>
+            <%-- Hiển thị giỏ hàng --%>
+            <div class="cart-items">
+                <h3>Your Cart</h3>
+                <%
+                    Vector<Cart> vectorCart = (Vector<Cart>) request.getAttribute("vectorCart");
+                    if (vectorCart != null && !vectorCart.isEmpty()) {
+                %>
+                <table>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                    </tr>
+                    <%
+                        double grandTotal = 0;
+                        for (Cart item : vectorCart) {
+                            double total = item.getQuantity() * item.getList_price();
+                            grandTotal += total;
+                    %>
+                    <tr>
+                        <td><%= item.getProduct_name() %></td>
+                        <td><%= item.getQuantity() %></td>
+                        <td>$<%= String.format("%.2f", item.getList_price()) %></td>
+                        <td>$<%= String.format("%.2f", total) %></td>
+                    </tr>
+                    <% } %>
+                    <tr class="grand-total">
+                        <td colspan="3"><strong>Grand Total</strong></td>
+                        <td>$<%= String.format("%.2f", grandTotal) %></td>
+                    </tr>
+                </table>
+                <% } else { %>
+                <p>Your cart is empty.</p>
+                <% } %>
+            </div>
+
+            <form action="OrderController" method="POST">
+                <input type="hidden" name="service" value="confirmOrder" />
+                <button type="submit" class="btn btn-primary">Confirm Order</button>
             </form>
+            <a href="CartURL?service=showCart" class="btn btn-secondary">Back to Cart</a>
         </div>
     </body>
 </html>
-
-
