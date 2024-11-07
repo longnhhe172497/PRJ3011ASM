@@ -48,7 +48,7 @@ public class StaffsController extends HttpServlet {
             }
             if (service.equals("logoutStaffs")) {
                 session.invalidate();
-                response.sendRedirect("StaffsURL?service=listAllStaffs");
+                response.sendRedirect("ProductURL");
             }
 
             if (service.equals("loginStaffs")) {
@@ -65,7 +65,7 @@ public class StaffsController extends HttpServlet {
                         request.getRequestDispatcher("JSP/loginStaffs.jsp").forward(request, response);
                     } else {
                         session.setAttribute("staffs", staffs);
-                        response.sendRedirect("StaffsURL?service=listAllStaffs");
+                        response.sendRedirect("ProductURL");
 
                     }
                 }
@@ -86,14 +86,14 @@ public class StaffsController extends HttpServlet {
 
                     String sid = request.getParameter("sid");
                     int staffID = Integer.parseInt(sid);
-                    Vector<Staffs> vector = dao.getStaffs("select * from Staffs where staff_id=" + staffID);
+                    Vector<Staffs> vectorStaff = dao.getStaffs("select * from Staffs where staff_id=" + staffID);
                     ResultSet rsActive = dao.getData("SELECT distinct active FROM [Staffs]");
                     ResultSet rsStore = dao.getData("SELECT distinct store_id FROM [Staffs]");
                     ResultSet rsManager = dao.getData("SELECT distinct manager_id FROM [Staffs]");
                     request.setAttribute("rsActive", rsActive);
                     request.setAttribute("rsStore", rsStore);
                     request.setAttribute("rsManager", rsManager);
-                    request.setAttribute("vector", vector);
+                    request.setAttribute("vectorStaff", vectorStaff);
                     dispath(request, response, "JSP/updateStaffs.jsp");
                 } else {
                     //  if (submit != null) {
@@ -171,11 +171,11 @@ public class StaffsController extends HttpServlet {
                     String sname = request.getParameter("sname");
                     sql = "select * from Staffs where first_name like '%" + sname + "%'";
                 }
-                Vector<Staffs> vector = dao.getStaffs(sql);
+                Vector<Staffs> vectorStaff = dao.getStaffs(sql);
                 //select view:jsp
                 RequestDispatcher dispath = request.getRequestDispatcher("/JSP/listStaffs.jsp");
                 //set data to view
-                request.setAttribute("staffsData", vector);
+                request.setAttribute("staffsData", vectorStaff);
                 request.setAttribute("tableTitle", "Staffs Manage");
                 //run
                 dispath.forward(request, response);

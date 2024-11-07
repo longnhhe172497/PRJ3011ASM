@@ -23,6 +23,7 @@ import java.util.Vector;
 import model.DAOOrder_items;
 import model.DAOOrders;
 import model.DBConnect;
+import java.time.LocalDate;
 
 /**
  *
@@ -58,11 +59,11 @@ public class CheckOutController extends HttpServlet {
         // Tính tổng tiền của giỏ hàng
         double grandTotal = 0;
         for (Cart item : vectorCart) {
-            double total = item.getQuantity() * item.getList_price();
+            double total = item.getQuantity() * item.getList_price() * (1 - item.getDiscount());
             grandTotal += total;
         }
 
-        // Giả sử thông tin khách hàng được lưu trong session
+        // Lấy thông tin khách hàng từ session
         Customer customer = (Customer) session.getAttribute("customer");
 
         // Nếu không có khách hàng trong session, chuyển hướng đến trang đăng nhập
@@ -71,61 +72,88 @@ public class CheckOutController extends HttpServlet {
             return;
         }
 
-        // Lưu giỏ hàng, tổng tiền và thông tin khách hàng vào request
+        // Lưu thông tin khách hàng vào request để hiển thị trên form thanh toán
+        request.setAttribute("customerName", customer.getFirst_name() + " " + customer.getLast_name());
+        request.setAttribute("customerPhone", customer.getPhone());
+        request.setAttribute("customerEmail", customer.getEmail());
+        request.setAttribute("customerAddress", customer.getStreet() + ", " + customer.getCity() + ", " + customer.getState());
+        
+        // Lưu giỏ hàng và tổng tiền vào request
         request.setAttribute("vectorCart", vectorCart);
         request.setAttribute("grandTotal", grandTotal);
         request.setAttribute("customer", customer);
-
-        // Chuyển hướng tới trang checkout.jsp để hiển thị thông tin
-        request.getRequestDispatcher("JSP/checkout.jsp").forward(request, response);
 
         DAOOrders daoOr = new DAOOrders();
         DAOOrder_items daoOrIt = new DAOOrder_items();
         try {
             String service = request.getParameter("service");
             if ("confirmOrder".equals(service)) {
-                String order_id = request.getParameter("order_id");  // Not needed anymore
-                String customer_id = request.getParameter("customer_id");
-                String order_status = request.getParameter("order_status");
-                String order_date = "2024-11-07"; // Example order date (this should come dynamically)
-                String required_date = "2024-11-14"; // Example required date (this should come dynamically)
-                String shipped_date = "2024-11-08";
-                String store_id = request.getParameter("store_id");
-                String staff_id = request.getParameter("staff_id");
+                // Lấy thông tin từ session
+                int customer_id = customer.getCustomer_id();
+                int order_status = 1; // Mặc định là đang xử lý
+                
+                // Lấy ngày hiện tại và tính ngày giao hàng dự kiến (7 ngày sau)
+                LocalDate currentDate = LocalDate.now();
+                String order_date = currentDate.toString();
+                String required_date = currentDate.plusDays(7).toString();
+                String shipped_date = currentDate.plusDays(7).toString(); // Chưa giao hàng - đặt là chuỗi rỗng thay vì null
+                
+                // Giả sử store_id và staff_id được cố định hoặc lấy từ cấu hình
+                int store_id = 1; // Cần thay đổi theo logic thực tế
+                int staff_id = 1; // Cần thay đổi theo logic thực tế
 
-                // check data- validate
-                if (customer_id == null || customer_id.equals("")) {
-                    out.print("customer_id is empty");
-                    return;
-                }
-
-                // Convert to integers
-                int customer_iD = Integer.parseInt(customer_id);
-                int order_statuS = Integer.parseInt(order_status);
-                int store_iD = Integer.parseInt(store_id);
-                int staff_iD = Integer.parseInt(staff_id);
-
-                // Get the next order_id by finding the max order_id and incrementing it
-                int order_iD = daoOr.getNextOrderId();  // This method gets the next order_id (max + 1)
-
-                // Create a new order
-                Orders order = new Orders(order_iD, customer_iD, order_statuS, order_date, required_date, shipped_date, store_iD, staff_iD);
-
-                // Add the order to the database
+                // Tạo đơn hàng mới với đầy đủ thông tin
+                int order_id = daoOr.getNextOrderId();
+                Orders order = new Orders();
+                order.setOrder_id(order_id);
+                order.setCustomer_id(customer_id);
+                order.setOrder_status(order_status);
+                order.setOrder_date(order_date);
+                order.setRequired_date(required_date);
+                order.setShipped_date(shipped_date);
+                order.setStore_id(store_id);
+                order.setStaff_id(staff_id);
+                
+                // Thêm đơn hàng vào database
                 int n = daoOr.addOrder(order);
-
-                // Remove the cart from session after order is placed
-                session.removeAttribute("vectorCart");
-
-                // Forward to order confirmation page
-                request.setAttribute("orderId", order_iD);
-                request.setAttribute("grandTotal", grandTotal);
-                request.getRequestDispatcher("JSP/orderConfirmation.jsp").forward(request, response);
+                
+                if (n > 0) {
+                    // Thêm chi tiết đơn hàng
+                    int item_id = 1; // Bắt đầu từ 1 và tăng dần
+                    for (Cart item : vectorCart) {
+                        Order_items orderItem = new Order_items();
+                        orderItem.setOrder_id(order_id);
+                        orderItem.setItem_id(item_id); // Sử dụng item_id tăng dần
+                        orderItem.setProduct_id(item.getProduct_id());
+                        orderItem.setQuantity(item.getQuantity());
+                        orderItem.setList_price(item.getList_price());
+                        orderItem.setDiscount(item.getDiscount());
+                        daoOrIt.addOrder_items(orderItem);
+                        item_id++; // Tăng item_id sau mỗi lần thêm sản phẩm
+                    }
+                    
+                    // Xóa tất cả các sản phẩm trong giỏ hàng
+                    Enumeration<String> sessionAttrs = session.getAttributeNames();
+                    while (sessionAttrs.hasMoreElements()) {
+                        String attrName = sessionAttrs.nextElement();
+                        if (attrName.startsWith("product_")) {
+                            session.removeAttribute(attrName);
+                        }
+                    }
+                    session.removeAttribute("cart");
+                    
+                    // Chuyển hướng đến trang xác nhận đơn hàng
+                    request.setAttribute("orderId", order_id);
+                    request.setAttribute("grandTotal", grandTotal);
+                    request.getRequestDispatcher("JSP/processPayment.jsp").forward(request, response);
+                }
             } else {
-                // Handle other services here
+                // Hiển thị trang checkout
+                request.getRequestDispatcher("JSP/checkout.jsp").forward(request, response);
             }
         } catch (Exception e) {
             e.printStackTrace();
+            response.sendRedirect("error.jsp");
         }
     }
 
