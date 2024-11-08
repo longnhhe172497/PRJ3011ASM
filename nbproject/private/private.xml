@@ -6,10 +6,10 @@
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/JSP/billManager.jsp</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/css/billManager.css</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/css/cart.css</file>
+            <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/JSP/insertOrder_items.jsp</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/css/checkout.css</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/JSP/listOrder_items.jsp</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/src/java/controller/ProductController.java</file>
-            <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/css/login.css</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/JSP/listOrders.jsp</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/src/java/controller/CheckOutController.java</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/src/java/controller/CustomerController.java</file>
@@ -17,10 +17,11 @@
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/JSP/listStocks.jsp</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/JSP/homeManager.jsp</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/css/home.css</file>
+            <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/JSP/viewCart.jsp</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/src/java/model/DBConnect.java</file>
-            <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/css/panner.css</file>
+            <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/JSP/detailBill.jsp</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/src/java/controller/BillController.java</file>
-            <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/css/homeManager.css</file>
+            <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/JSP/loginStaffs.jsp</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/JSP/loginCustomer.jsp</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/src/java/model/DAOOrders.java</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/JSP/listProduct.jsp</file>
@@ -29,7 +30,9 @@
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/JSP/listStaffs.jsp</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/JSP/checkout.jsp</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/JSP/processPayment.jsp</file>
+            <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/JSP/insertCustomer.jsp</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/src/java/controller/StoresController.java</file>
+            <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/src/java/controller/StaffsController.java</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/JSP/listCustomer.jsp</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/web/JSP/listStores.jsp</file>
             <file>file:/C:/Users/PHUONG%20THAO/Documents/NetBeansProjects/PRJ3011ASM/src/java/controller/CartController.java</file>

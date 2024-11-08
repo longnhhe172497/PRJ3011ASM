@@ -14,15 +14,16 @@
         <link rel="stylesheet" type="text/css" href="css/login.css">
     </head>
     <body>
+        <a href="ProductURL" style="font-size: 1,5em; position: fixed; top: 20px; left: 20px; color: white;">Back To Home</a>
         <div class="login-container">
             <h2>Login Staff</h2>
             <% String error=(String)request.getAttribute("error");%>
             <% if(error != null) { %>
-                <div class="error-message">
-                    <p style="color:red; text-align:center; margin-bottom:15px;">
-                        <%= error %>
-                    </p>
-                </div>
+            <div class="error-message">
+                <p style="color:red; text-align:center; margin-bottom:15px;">
+                    <%= error %>
+                </p>
+            </div>
             <% } %>
             <form action="StaffsURL" method="post">
                 <input type="hidden" name="service" value="loginStaffs">
@@ -31,10 +32,12 @@
 
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password" required>
-
+                
+                
                 <div style="display: flex; justify-content: space-between;">
                     <input type="submit" value="Login" name="submit">
                     <input type="reset" value="Clear">
+
                 </div>
             </form>
         </div>
