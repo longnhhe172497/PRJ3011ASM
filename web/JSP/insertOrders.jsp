@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>insertOrders</title>
+        <title>InsertOrders</title>
     </head>
     <body>
         <% ResultSet rsStore=(ResultSet)request.getAttribute("rsStore");

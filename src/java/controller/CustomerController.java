@@ -78,7 +78,7 @@ public class CustomerController extends HttpServlet {
 
             if (service.equals("updateCustomer")) {
                 String submit = request.getParameter("submit");
-                if (submit == null) {//show insert form
+                if (submit == null) {
                     String cid = request.getParameter("cid");
                     int customerID = Integer.parseInt(cid);
                     Vector<Customer> vector = dao.getCustomers("select * from Customers where customer_id=" + customerID);

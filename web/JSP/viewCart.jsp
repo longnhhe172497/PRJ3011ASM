@@ -35,7 +35,6 @@
                         <td><%= item.getProduct_id() %></td>
                         <td><%= item.getProduct_name() %></td>
                         <td>
-                            <!-- Input field for quantity -->
                             <input type="number" name="quantity_<%= item.getProduct_id() %>" min="1" max="10" value="<%= item.getQuantity() %>" />
                         </td>
                         <td>$<%= String.format("%.2f", item.getList_price()) %></td>

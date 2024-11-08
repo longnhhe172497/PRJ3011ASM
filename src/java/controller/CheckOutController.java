@@ -45,7 +45,6 @@ public class CheckOutController extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession(true);
 
-        // Lấy giỏ hàng từ session
         Vector<Cart> vectorCart = new Vector<>();
         Enumeration<String> attributeNames = session.getAttributeNames();
         while (attributeNames.hasMoreElements()) {
@@ -56,29 +55,24 @@ public class CheckOutController extends HttpServlet {
             }
         }
 
-        // Tính tổng tiền của giỏ hàng
         double grandTotal = 0;
         for (Cart item : vectorCart) {
             double total = item.getQuantity() * item.getList_price() * (1 - item.getDiscount());
             grandTotal += total;
         }
 
-        // Lấy thông tin khách hàng từ session
         Customer customer = (Customer) session.getAttribute("customer");
 
-        // Nếu không có khách hàng trong session, chuyển hướng đến trang đăng nhập
         if (customer == null) {
             response.sendRedirect("CustomerURL?service=loginCustomer");
             return;
         }
 
-        // Lưu thông tin khách hàng vào request để hiển thị trên form thanh toán
         request.setAttribute("customerName", customer.getFirst_name() + " " + customer.getLast_name());
         request.setAttribute("customerPhone", customer.getPhone());
         request.setAttribute("customerEmail", customer.getEmail());
         request.setAttribute("customerAddress", customer.getStreet() + ", " + customer.getCity() + ", " + customer.getState());
-        
-        // Lưu giỏ hàng và tổng tiền vào request
+
         request.setAttribute("vectorCart", vectorCart);
         request.setAttribute("grandTotal", grandTotal);
         request.setAttribute("customer", customer);
@@ -88,21 +82,17 @@ public class CheckOutController extends HttpServlet {
         try {
             String service = request.getParameter("service");
             if ("confirmOrder".equals(service)) {
-                // Lấy thông tin từ session
                 int customer_id = customer.getCustomer_id();
-                int order_status = 1; // Mặc định là đang xử lý
-                
-                // Lấy ngày hiện tại và tính ngày giao hàng dự kiến (7 ngày sau)
+                int order_status = 1;
+
                 LocalDate currentDate = LocalDate.now();
                 String order_date = currentDate.toString();
                 String required_date = currentDate.plusDays(7).toString();
-                String shipped_date = currentDate.plusDays(7).toString(); // Chưa giao hàng - đặt là chuỗi rỗng thay vì null
-                
-                // Giả sử store_id và staff_id được cố định hoặc lấy từ cấu hình
-                int store_id = 1; // Cần thay đổi theo logic thực tế
-                int staff_id = 1; // Cần thay đổi theo logic thực tế
+                String shipped_date = currentDate.plusDays(7).toString();
 
-                // Tạo đơn hàng mới với đầy đủ thông tin
+                int store_id = 1;
+                int staff_id = 1;
+
                 int order_id = daoOr.getNextOrderId();
                 Orders order = new Orders();
                 order.setOrder_id(order_id);
@@ -113,26 +103,23 @@ public class CheckOutController extends HttpServlet {
                 order.setShipped_date(shipped_date);
                 order.setStore_id(store_id);
                 order.setStaff_id(staff_id);
-                
-                // Thêm đơn hàng vào database
+
                 int n = daoOr.addOrder(order);
-                
+
                 if (n > 0) {
-                    // Thêm chi tiết đơn hàng
-                    int item_id = 1; // Bắt đầu từ 1 và tăng dần
+                    int item_id = 1;
                     for (Cart item : vectorCart) {
                         Order_items orderItem = new Order_items();
                         orderItem.setOrder_id(order_id);
-                        orderItem.setItem_id(item_id); // Sử dụng item_id tăng dần
+                        orderItem.setItem_id(item_id);
                         orderItem.setProduct_id(item.getProduct_id());
                         orderItem.setQuantity(item.getQuantity());
                         orderItem.setList_price(item.getList_price());
                         orderItem.setDiscount(item.getDiscount());
                         daoOrIt.addOrder_items(orderItem);
-                        item_id++; // Tăng item_id sau mỗi lần thêm sản phẩm
+                        item_id++;
                     }
-                    
-                    // Xóa tất cả các sản phẩm trong giỏ hàng
+
                     Enumeration<String> sessionAttrs = session.getAttributeNames();
                     while (sessionAttrs.hasMoreElements()) {
                         String attrName = sessionAttrs.nextElement();
@@ -141,14 +128,12 @@ public class CheckOutController extends HttpServlet {
                         }
                     }
                     session.removeAttribute("cart");
-                    
-                    // Chuyển hướng đến trang xác nhận đơn hàng
+
                     request.setAttribute("orderId", order_id);
                     request.setAttribute("grandTotal", grandTotal);
                     request.getRequestDispatcher("JSP/processPayment.jsp").forward(request, response);
                 }
             } else {
-                // Hiển thị trang checkout
                 request.getRequestDispatcher("JSP/checkout.jsp").forward(request, response);
             }
         } catch (Exception e) {

@@ -43,7 +43,6 @@
             </div>
 
             <div class="content" id="mainContent">
-                <!-- Content will be loaded dynamically here -->
                 <h2>Select a management option from the left menu to begin</h2>
             </div>
         </div>

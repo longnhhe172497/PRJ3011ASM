@@ -24,7 +24,6 @@
                Vector<String> categories = (Vector<String>) request.getAttribute("categories");
             %>
             <div class="container">
-                <!-- Sidebar for Categories -->
                 <div class="sidebar">
                     <h3>Categories</h3>
                     <ul>
